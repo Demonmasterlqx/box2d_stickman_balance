@@ -7,12 +7,17 @@ Renderer::Renderer(b2WorldDef worldDef, float timeStep, int subStepCount)
     worldId = b2CreateWorld(&worldDef);
 }
 
-void Renderer::addBody(const Object& body) {
+b2BodyId Renderer::addBody(const Object& body) {
     // 完全复制 Object 并创建物理体
     Object obj = body;
     obj.bodyId = b2CreateBody(worldId, &obj.bodyDef);
     b2CreatePolygonShape(obj.bodyId, &obj.shapeDef, &obj.polygon);
     ObjectList.push_back(obj);
+    return obj.bodyId;
+}
+
+b2JointId Renderer::addRevoluteJoint(const b2RevoluteJointDef & jointDef){
+    return b2CreateRevoluteJoint(worldId, &jointDef);
 }
 
 void Renderer::updateFrame(GLFWwindow* window) {

@@ -12,6 +12,16 @@
 #include <glad/glad.h>                   // OpenGL loader（如使用 glad）
 #endif
 
+
+enum CollisionCategory
+{
+    CATEGORY_PLAYER1 = 0x0001, // 0000000000000001
+    CATEGORY_PLAYER2  = 0x0002, // 0000000000000010
+    CATEGORY_PLAYER3   = 0x0004, // 0000000000000100
+    CATEGORY_PLAYER4 = 0x0008, // 0000000000001000
+    CATEGORY_SURROUNDING = 0x0010, // 0000000000010000
+};
+
 /**
  * @brief 这个结构体用来表示一个可渲染的物体
  * 
@@ -54,7 +64,15 @@ class Renderer {
      * 
      * @param body 物体
      */
-    void addBody(const Object & body);
+    b2BodyId addBody(const Object & body);
+
+    /**
+     * @brief 添加一个新的铰接关节到渲染器中
+     * 
+     * @param jointDef 
+     * @return b2JointId 
+     */
+    b2JointId addRevoluteJoint(const b2RevoluteJointDef & jointDef);
 
     /**
      * @brief 函数将会更新world并将其渲染到屏幕上
