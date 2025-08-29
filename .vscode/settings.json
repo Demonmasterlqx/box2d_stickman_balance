@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "box2d.h": "c",
-        "random": "c",
-        "stdio.h": "c",
-        "imgui_impl_opengl3.h": "c"
-    }
-}
