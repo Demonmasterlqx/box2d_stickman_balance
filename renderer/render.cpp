@@ -26,7 +26,7 @@ void Renderer::updateFrame(GLFWwindow* window) {
     ImVec2 screenOffset(display_w / 2.0f, display_h / 2.0f);
 
     for (const auto& obj : ObjectList) {
-        if (B2_IS_NULL(obj.bodyId)) continue;
+        if (!b2Body_IsValid(obj.bodyId)) continue;
         b2Vec2 pos = b2Body_GetPosition(obj.bodyId);
         float angle = b2Rot_GetAngle(b2Body_GetRotation(obj.bodyId));
         int count = obj.polygon.count;

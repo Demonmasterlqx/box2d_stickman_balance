@@ -33,19 +33,20 @@ int main() {
     // 物理世界和渲染器初始化
     b2WorldDef worldDef = b2DefaultWorldDef();
     worldDef.gravity = {0.0f, -10.0f};
+    worldDef.workerCount = 4;
     Renderer renderer(worldDef);
 
     // 添加地面
     b2BodyDef groundBodyDef = b2DefaultBodyDef();
-    groundBodyDef.position = {0.0f, -10.0f};
-    b2Polygon groundBox = b2MakeBox(50.0f, 10.0f);
+    groundBodyDef.position = {0.0f, -5.0f};
+    b2Polygon groundBox = b2MakeBox(50.0f, 0.2f);
     b2ShapeDef groundShapeDef = b2DefaultShapeDef();
     renderer.addBody(Object(groundBodyDef, groundBox, groundShapeDef));
 
     // 添加一个动态方块
     b2BodyDef bodyDef = b2DefaultBodyDef();
     bodyDef.type = b2_dynamicBody;
-    bodyDef.position = {0.0f, 4.0f};
+    bodyDef.position = {0.0f, 0.0f};
     b2Polygon dynamicBox = b2MakeBox(1.0f, 1.0f);
     b2ShapeDef shapeDef = b2DefaultShapeDef();
     shapeDef.density = 1.0f;
