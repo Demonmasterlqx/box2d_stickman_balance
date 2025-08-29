@@ -62,8 +62,8 @@ int main() {
         // 可选：显示ImGui Demo窗口
         // ImGui::ShowDemoWindow();
 
-        // 更新物理世界并渲染
-        renderer.updateFrame();
+        // 更新物理世界并渲染（自适应窗口大小）
+        renderer.updateFrame(window);
 
         ImGui::Render();
         int display_w, display_h;

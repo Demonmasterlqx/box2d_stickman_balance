@@ -15,16 +15,20 @@ void Renderer::addBody(const Object& body) {
     ObjectList.push_back(obj);
 }
 
-void Renderer::updateFrame() {
+void Renderer::updateFrame(GLFWwindow* window) {
     // 更新物理世界
     b2World_Step(worldId, timeStep, subStepCount);
 
-    // 遍历 ObjectList，绘制每个物体
+    // 动态获取窗口大小
+    int display_w = 1280, display_h = 720;
+    if (window) glfwGetFramebufferSize(window, &display_w, &display_h);
+    float scale = display_h / 18.0f; // 让物理世界18米高正好填满窗口
+    ImVec2 screenOffset(display_w / 2.0f, display_h / 2.0f);
+
     for (const auto& obj : ObjectList) {
         if (B2_IS_NULL(obj.bodyId)) continue;
         b2Vec2 pos = b2Body_GetPosition(obj.bodyId);
         float angle = b2Rot_GetAngle(b2Body_GetRotation(obj.bodyId));
-        // 获取多边形顶点
         int count = obj.polygon.count;
         std::vector<ImVec2> points;
         points.reserve(count);
@@ -33,9 +37,10 @@ void Renderer::updateFrame() {
             float y = obj.polygon.vertices[i].y;
             float rx = x * cosf(angle) - y * sinf(angle);
             float ry = x * sinf(angle) + y * cosf(angle);
-            points.emplace_back(pos.x + rx, pos.y + ry);
+            float sx = screenOffset.x + (pos.x + rx) * scale;
+            float sy = screenOffset.y - (pos.y + ry) * scale;
+            points.emplace_back(sx, sy);
         }
-        // 绘制多边形
         ImDrawList* draw_list = ImGui::GetBackgroundDrawList();
         if (!points.empty())
             draw_list->AddPolyline(points.data(), points.size(), IM_COL32(255,255,0,255), true, 2.0f);

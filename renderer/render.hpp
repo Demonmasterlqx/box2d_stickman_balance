@@ -60,7 +60,7 @@ class Renderer {
      * @brief 函数将会更新world并将其渲染到屏幕上
      * 
      */
-    void updateFrame();
+    void updateFrame(GLFWwindow* window);
 
     /**
      * @brief Destroy the Renderer object 清理上下文资源
