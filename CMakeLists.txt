@@ -12,13 +12,32 @@ file(GLOB IMGUI_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.cpp
 )
 
-add_library(imgui STATIC ${IMGUI_SOURCES})
+file(GLOB Renderer_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/renderer/*.cpp
+)
 
-add_executable(box2d_try windows.cpp)
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui
+    ${GLFW3_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/renderer
+)
+
+add_library(imgui STATIC ${IMGUI_SOURCES})
+add_library(renderer STATIC ${Renderer_SOURCES})
+
+add_executable(box2d_try demo.cpp)
 
 target_include_directories(box2d_try PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/imgui
     ${GLFW3_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/renderer
 )
 
-target_link_libraries(box2d_try box2d m imgui glfw3 OpenGL)
+target_include_directories(renderer PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui
+    ${GLFW3_INCLUDE_DIRS}
+)
+
+target_link_libraries(renderer box2d m imgui glfw3 OpenGL)
+
+target_link_libraries(box2d_try box2d m imgui glfw3 OpenGL renderer)
